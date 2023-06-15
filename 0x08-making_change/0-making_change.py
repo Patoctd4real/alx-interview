@@ -1,18 +1,20 @@
 #!/usr/bin/python3
-"""
-Change comes from within
-"""
+"""Given an n x n 2D matrix, rotate it 90 degrees clockwise."""
 
 
 def makeChange(coins, total):
-    """
-    Given a pile of coins of different values,
-    determine the fewest number of coins needed to meet a given amount total
-    """
+    """Given a pile of coins of different values,
+    determine the fewest number of coins needed to meet a given amount total"""
     if total <= 0:
         return 0
-    dp = [0] + [float("inf")] * (total)
+
+    current_total = 0
+    coin_used = 0
+    coins = sorted(coins, reverse=True)
     for coin in coins:
-        for i in range(coin, total + 1):
-            dp[i] = min(dp[i], dp[i - coin] + 1)
-    return dp[-1] if dp[-1] != float("inf") else -1
+        r = (total-current_total)//coin
+        current_total += r*coin
+        coin_used += r
+        if current_total == total:
+            return coin_used
+    return -1
